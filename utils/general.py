@@ -36,6 +36,7 @@ def find_contorus(mask, threshold=0.5):
     return polygons
 
 def iou_polygon(poly1, poly2):
+    if len(poly1) < 3 or len(poly2) < 3: return 0
     poly1_shapely = Polygon(poly1)
     poly2_shapely = Polygon(poly2)
 

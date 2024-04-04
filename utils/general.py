@@ -31,14 +31,17 @@ def find_contorus(mask, threshold=0.5):
         poly = cv2.approxPolyDP(cnt, 0.05 * cv2.arcLength(cnt, True), True)
         poly = poly.squeeze(1)
         
-        polygons.append(poly)
-
+        if area_of_polygon(poly) > 0:
+            polygons.append(poly)
+        
     return polygons
 
 def iou_polygon(poly1, poly2):
     if len(poly1) < 3 or len(poly2) < 3: return 0
     poly1_shapely = Polygon(poly1)
     poly2_shapely = Polygon(poly2)
+    
+    if not poly1_shapely.is_valid or not poly2_shapely.is_valid: return 0
 
     intersection_area = poly1_shapely.intersection(poly2_shapely).area
     union_area = poly1_shapely.union(poly2_shapely).area
